@@ -1,4 +1,5 @@
 const staticCacheName = 'site-static-v1.3'
+const dynamicCacheName = 'site-dynamic-v1.0'
 
 const assets = [
     './',
@@ -28,6 +29,19 @@ self.addEventListener('activate', event => {
     console.log('Service Worker has been activated');
 })
 
-// self.addEventListener('fetch', event => {
-//     console.log('Fetch event')
-// })
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(cacheRes => {
+            return (
+                cacheRes ||
+                fetch(event.request).then(async fetchRes => {
+                    return caches.open(dynamicCacheName).then(cache => {
+                        cache.put(event.request.url, fetchRes.clone())
+
+                        return fetchRes
+                    })
+                })
+            )
+        })
+    )
+})
