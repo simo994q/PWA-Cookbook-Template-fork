@@ -44,4 +44,16 @@ self.addEventListener('fetch', event => {
             )
         })
     )
+    limitCacheSize(dynamicCacheName, 5)
 })
+
+
+const limitCacheSize = (cacheName, numberOfAllowed) => {
+    caches.open(cacheName).then(cache => {
+        cache.keys().then(keys => {
+            if (keys.length > numberOfAllowed) {
+                cache.delete(keys[0]).then(limitCacheSize(cacheName, numberOfAllowed))
+            }
+        })
+    })
+}
