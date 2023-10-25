@@ -1,3 +1,9 @@
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../sw.js')
+    .then(reg => console.log('service worker registered', reg))
+    .catch(err => console.error('service worker not registered', err))
+}
+
 const staticCacheName = 'site-static-v1.3'
 const dynamicCacheName = 'site-dynamic-v1.0'
 
