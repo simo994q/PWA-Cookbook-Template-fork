@@ -115,6 +115,6 @@ self.addEventListener('activate', event => {
 // Går til fallback hvis man ikke kan fetche
 self.addEventListener('fetch', event => {
     event.respondWith(fetch(event.request).catch(() => {
-        return caches.match('fallback.html')
+        return caches.matchAll('fallback.html')
     }))
 })
